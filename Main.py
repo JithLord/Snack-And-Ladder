@@ -8,14 +8,14 @@ BLOCK_SIZE = 600//10
 COLORS = ((0, 0, 0), (255, 0, 0), (0, 100, 0), (0, 0, 255))
 
 # Snakes' and ladders' positions where key is from and value is to.
-SNACKS = {93:28, 84:41, 59:38, 55:12, 23:3}
+SNAKES = {93:28, 84:41, 59:38, 55:12, 23:3}
 LADDERS = {4:36, 10:49, 26:85, 40:79, 70:92}
 
 # Sample players
-players = [ {"name": "Player 1", "pos": 0, "color": COLORS[0], "bot": True},
-            {"name": "Player 2", "pos": 0, "color": COLORS[1], "bot": True},
-            {"name": "Player 3", "pos": 0, "color": COLORS[2], "bot": False},
-            {"name": "Player 4", "pos": 0, "color": COLORS[3], "bot": False} ]
+players = [ {"name": "Player 1", "pos": 1, "color": COLORS[0], "bot": True},
+            {"name": "Player 2", "pos": 1, "color": COLORS[1], "bot": True},
+            {"name": "Player 3", "pos": 1, "color": COLORS[2], "bot": False},
+            {"name": "Player 4", "pos": 1, "color": COLORS[3], "bot": False} ]
 
 # game_message holds value of game status to display
 game_message = ""
@@ -62,8 +62,8 @@ def draw_players_on_map():
     
     # Draw logo
     logo_img = pygame.image.load("logo2.png")
-    logo_img = pygame.transform.scale(logo_img, (288, 144))
-    screen.blit(logo_img, (620,10))
+    logo_img = pygame.transform.scale(logo_img, (240, 120))
+    screen.blit(logo_img, (600,6))
     
     # Draw players' circle dots
     for player in players:
@@ -82,9 +82,9 @@ def draw_scoreboard():
     '''This function redraws the right sidebar of the game, including scoreboard and text.'''
     
     global game_won
-    pygame.draw.rect(screen, (65,186,235), (600,250,300,350))   # Draw a blue rectangle to "clear" the right side.
+    pygame.draw.rect(screen, (65,186,235), (600,150,300,260))   # Draw a blue rectangle to "clear" the right side.
     headingtext = heading_head.render("Players", 1, (0,0,0))    # Draw the word "Players"
-    screen.blit(headingtext, (675, 175))
+    screen.blit(headingtext, (675, 125))
     
     for player in players:                                      # For each player:
         if player["pos"] == 100:
@@ -92,8 +92,8 @@ def draw_scoreboard():
         index = players.index(player)
         score = player["name"] + ": " + str(player["pos"])
         scoretext = score_font.render(score, 1, (0,0,0))        # Draw player name and score
-        screen.blit(scoretext, (650, 250+50*index))
-        pygame.draw.circle(screen, player["color"], (638, 260+50*index), 6, 0)                  # Draw the small color circle dot
+        screen.blit(scoretext, (650, 200+50*index))
+        pygame.draw.circle(screen, player["color"], (638, 210+50*index), 6, 0)                  # Draw the small color circle dot
 
     a=players[player_index]["name"]+"'s turn"    
     playerturntext = heading_font.render(a.center(30," "), 1, (0,0,0))   # Draw player name of who should play
@@ -103,9 +103,16 @@ def draw_scoreboard():
     gamemsgtext = score_font.render(b.center(40," "), 1, (0,0,0)) # Draw game message
     screen.blit(gamemsgtext, (620, 540))
 
+def draw_die():
+    '''Draw die.'''
+    
+    die_img = pygame.image.load("die/die_"+str(dice_num)+".jpg")
+    die_img = pygame.transform.scale(die_img, (75, 75))
+    screen.blit(die_img, (712,410))
+
 def play_turn(player_index):
     '''This function actually "plays" and rolls the die.'''
-    global user_input, wait_for_user_input, game_message
+    global user_input, wait_for_user_input, game_message, dice_num
     
     if players[player_index]["bot"]:                                # If player is a computer:
         print("play_turn", player_index, "is bot. Playing.")
@@ -113,7 +120,6 @@ def play_turn(player_index):
         game_message = players[player_index]["name"] + " (bot) got " + str(dice_num)
     else:                                                           # If player is human:
         print("play_turn", player_index, "is user.")
-        dice_num = 0
         if user_input:                                              # Check if player has pressed space
             print("found user input. Setting", user_input, "for", player_index)
             dice_num = random.randint(1,6)                          # Roll a die
@@ -123,6 +129,8 @@ def play_turn(player_index):
             print("no user input. Setting wait for", player_index)
             wait_for_user_input = True                              # Keep waiting, stop function midway here
             return
+
+    draw_die()
     
     # Check if player crosses 100
     if players[player_index]["pos"]+dice_num > 100:
@@ -142,10 +150,10 @@ def check_and_teleport(player_index):
     global game_message
     
     # Check for snakes
-    if players[player_index]["pos"] in SNACKS:
+    if players[player_index]["pos"] in SNAKES:
         print(players[player_index]["name"], "was swallowed by a snake :(")
         game_message = players[player_index]["name"] + " was swallowed by a snake :("
-        players[player_index]["pos"] = SNACKS[players[player_index]["pos"]]
+        players[player_index]["pos"] = SNAKES[players[player_index]["pos"]]
     
     # Check for ladders
     elif players[player_index]["pos"] in LADDERS:
@@ -153,11 +161,27 @@ def check_and_teleport(player_index):
         game_message = players[player_index]["name"] + " climbed a ladder :)"
         players[player_index]["pos"] = LADDERS[players[player_index]["pos"]]
 
-# # Ask for player details
-players = []
-n = int(input("Number of players: "))
-for i in range(n):
-    players.append({"name": input("Name: "), "bot": True if input("Computer Bot? (yes/no): ").lower() in ("yes","y","true","T") else False, "pos": 0, "color": COLORS[i]})
+#Ask for player details
+##players = []
+##try:
+##    n = int(input("Number of players: "))
+##except ValueError:
+##    print("Invalid input. Exiting.")
+##    exit()
+##if n not in range(2,5):
+##    print("Number of players must be 2-4.")
+##    exit()
+##
+##for i in range(n):
+##    name = input("Name: ")
+##    b = input("Computer Bot? (yes/no): ").lower()
+##    if  b in ("yes", "y", "true","t"):
+##        bot=True 
+##    elif b in ("no", "n", "false","f"):
+##        bot=False 
+##    else:
+##        print("Invalid input, Try again.")
+##    players.append({"name": name, "bot": bot, "pos": 1, "color": COLORS[i] })
 
 # Initialize pygame
 pygame.init()
@@ -169,7 +193,7 @@ score_font = pygame.font.SysFont("comicsansms", 18)
 
 # Create a new screen of size: 900x600
 screen = pygame.display.set_mode([900,600])
-pygame.display.set_caption("Snack And Ladder")
+pygame.display.set_caption("Snake And Ladder")
 
 # Start a "clock" for the game
 fpsClock = pygame.time.Clock()
@@ -197,6 +221,7 @@ while True:
     
     play_turn(player_index)     # Play turn
     draw_scoreboard()           # Draw scoreboard
+    draw_die()
     pygame.display.update()     # Apply all changes made to screen
     
     # Stop if game won
@@ -216,5 +241,4 @@ while True:
         player_index += 1
     
     pygame.display.update()     # Apply all changes made to screen
-    fpsClock.tick(1)
-
+fpsClock.tick(1)
