@@ -241,4 +241,4 @@ while True:
         player_index += 1
     
     pygame.display.update()     # Apply all changes made to screen
-fpsClock.tick(1)
+fpsClock.tick(20)
