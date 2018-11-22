@@ -162,26 +162,26 @@ def check_and_teleport(player_index):
         players[player_index]["pos"] = LADDERS[players[player_index]["pos"]]
 
 #Ask for player details
-##players = []
-##try:
-##    n = int(input("Number of players: "))
-##except ValueError:
-##    print("Invalid input. Exiting.")
-##    exit()
-##if n not in range(2,5):
-##    print("Number of players must be 2-4.")
-##    exit()
-##
-##for i in range(n):
-##    name = input("Name: ")
-##    b = input("Computer Bot? (yes/no): ").lower()
-##    if  b in ("yes", "y", "true","t"):
-##        bot=True 
-##    elif b in ("no", "n", "false","f"):
-##        bot=False 
-##    else:
-##        print("Invalid input, Try again.")
-##    players.append({"name": name, "bot": bot, "pos": 1, "color": COLORS[i] })
+players = []
+try:
+    n = int(input("Number of players: "))
+except ValueError:
+    print("Invalid input. Exiting.")
+    exit()
+if n not in range(2,5):
+    print("Number of players must be 2-4.")
+    exit()
+
+for i in range(n):
+    name = input("Name: ")
+    b = input("Computer Bot? (yes/no): ").lower()
+    if  b in ("yes", "y", "true","t"):
+        bot=True 
+    elif b in ("no", "n", "false","f"):
+        bot=False 
+    else:
+        print("Invalid input, Try again.")
+    players.append({"name": name, "bot": bot, "pos": 1, "color": COLORS[i] })
 
 # Initialize pygame
 pygame.init()
@@ -241,4 +241,4 @@ while True:
         player_index += 1
     
     pygame.display.update()     # Apply all changes made to screen
-fpsClock.tick(20)
+fpsClock.tick(1)
