@@ -7,7 +7,7 @@ A rollable die for moving around the board.
 ## Contributors
 <table>
   <tr>
-   <td align="center"><a href="https://github.com/rithvikvibhu"><img src="https://avatars.githubusercontent.com/u/5113343?v=4" width="100px;" alt=""/><br /><sub><b>JithLord</b></sub></a><br /><a title="Documentation">📖</a> <a title="Algorithm">🔧</a></td>
+   <td align="center"><a href="https://github.com/rithvikvibhu"><img src="https://avatars.githubusercontent.com/u/5113343?v=4" width="100px;" alt=""/><br /><sub><b>Rithvik Vibhu</b></sub></a><br /><a title="Documentation">📖</a> <a title="Algorithm">🔧</a></td>
  
     
    <td align="center"><a href="https://github.com/JithLord"><img src="https://avatars.githubusercontent.com/u/45201620?v=4" width="100px;" alt=""/><br /><sub><b>JithLord</b></sub></a><br /><a href="https://github.com/JithLord/Snack-And-Ladder/commits?author=JithLord" title="Documentation">📖</a> <a title="Algorithm">🔧</a></td>
